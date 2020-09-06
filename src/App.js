@@ -19,13 +19,13 @@ function App() {
       cluster: process.env.REACT_APP_PUSHER_CLUSTER,
     });
     const channel = pusher.subscribe("messages");
-    channel.bind("inserted", function (newMessages) {
-      setMessages([...messages, newMessages]); //adding new messages to messages
-    });
+    channel.bind("inserted", (newMessages) =>
+      setMessages([...messages, newMessages]) //adding new messages to messages
+    );
 
     return () => {
-      pusher.unbind_all();
-      pusher.unsubscribe();
+      channel.unbind_all();
+      channel.unsubscribe();
     };
   }, [messages]);
 
