@@ -1,12 +1,15 @@
 import React from "react";
 import "./SidebarChat.css";
 import { Avatar } from "@material-ui/core";
+import api from "../../api/index";
 
 function SidebarChat({ addNewChat }) {
-  const createNewRoom = () => {
+  const createNewRoom = async () => {
     const roomName = prompt("Please enter name for room");
     if (roomName) {
-      // database work
+      await api.post("/api/room/new", {
+        name: roomName,
+      });
     }
   };
 
