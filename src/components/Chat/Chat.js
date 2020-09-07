@@ -7,7 +7,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import Message from "../Message/Message";
-function Chat() {
+function Chat({ messages }) {
   return (
     <div className="chat">
       <div className="chat__header">
@@ -29,15 +29,9 @@ function Chat() {
         </div>
       </div>
       <div className="chat__body">
-        <Message />
-        <Message isSender />
-        <Message isSender />
-        <Message />
-        <Message />
-        <Message isSender />
-        <Message />
-        <Message isSender />
-        <Message />
+        {messages.map((message) => (
+          <Message message={message} key={message._id} />
+        ))}
       </div>
       <div className="chat__footer">
         <InsertEmoticonIcon />

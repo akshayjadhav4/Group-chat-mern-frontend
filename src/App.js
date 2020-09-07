@@ -19,8 +19,9 @@ function App() {
       cluster: process.env.REACT_APP_PUSHER_CLUSTER,
     });
     const channel = pusher.subscribe("messages");
-    channel.bind("inserted", (newMessages) =>
-      setMessages([...messages, newMessages]) //adding new messages to messages
+    channel.bind(
+      "inserted",
+      (newMessages) => setMessages([...messages, newMessages]) //adding new messages to messages
     );
 
     return () => {
@@ -29,14 +30,13 @@ function App() {
     };
   }, [messages]);
 
-  console.log(messages);
   return (
     <div className="app">
       <div className="app__body">
         {/* Sidebar */}
         <Sidebar />
         {/* Chat */}
-        <Chat />
+        <Chat messages={messages} />
       </div>
     </div>
   );
