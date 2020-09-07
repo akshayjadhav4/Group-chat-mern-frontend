@@ -3,7 +3,7 @@ import "./SidebarChat.css";
 import { Avatar } from "@material-ui/core";
 import api from "../../api/index";
 
-function SidebarChat({ addNewChat }) {
+function SidebarChat({ addNewChat, room }) {
   const createNewRoom = async () => {
     const roomName = prompt("Please enter name for room");
     if (roomName) {
@@ -17,7 +17,7 @@ function SidebarChat({ addNewChat }) {
     <div className="sidebarChat">
       <Avatar />
       <div className="sidebarChat__info">
-        <h2>Room Name</h2>
+        <h2>{room.name}</h2>
         <p>This is the last message</p>
       </div>
     </div>
