@@ -8,7 +8,10 @@ import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import Message from "../Message/Message";
 import api from "../../api/index";
+import { useParams } from "react-router-dom";
+
 function Chat({ messages }) {
+  const { roomId } = useParams();
   const [input, setInput] = useState("");
   const sendMessage = async (e) => {
     e.preventDefault();

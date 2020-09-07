@@ -4,6 +4,8 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Chat from "./components/Chat/Chat";
 import Pusher from "pusher-js";
 import api from "./api/index";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 function App() {
   const [messages, setMessages] = useState([]);
   //loading all messages from db
@@ -33,10 +35,16 @@ function App() {
   return (
     <div className="app">
       <div className="app__body">
-        {/* Sidebar */}
-        <Sidebar />
-        {/* Chat */}
-        <Chat messages={messages} />
+        <Router>
+          {/* Sidebar */}
+          <Sidebar />
+          <Switch>
+            <Route path="/rooms/:roomId">
+              {/* Chat */}
+              <Chat messages={messages} />
+            </Route>
+          </Switch>
+        </Router>
       </div>
     </div>
   );

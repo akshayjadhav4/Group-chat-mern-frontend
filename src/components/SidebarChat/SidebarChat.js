@@ -2,6 +2,7 @@ import React from "react";
 import "./SidebarChat.css";
 import { Avatar } from "@material-ui/core";
 import api from "../../api/index";
+import { Link } from "react-router-dom";
 
 function SidebarChat({ addNewChat, room }) {
   const createNewRoom = async () => {
@@ -14,13 +15,15 @@ function SidebarChat({ addNewChat, room }) {
   };
 
   return !addNewChat ? (
-    <div className="sidebarChat">
-      <Avatar />
-      <div className="sidebarChat__info">
-        <h2>{room.name}</h2>
-        <p>This is the last message</p>
+    <Link to={`/rooms/${room._id}`}>
+      <div className="sidebarChat">
+        <Avatar />
+        <div className="sidebarChat__info">
+          <h2>{room.name}</h2>
+          <p>This is the last message</p>
+        </div>
       </div>
-    </div>
+    </Link>
   ) : (
     <div className="sidebarChat" onClick={createNewRoom}>
       <div className="sidebarChat__info">
