@@ -5,9 +5,13 @@ import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import SidebarChat from "../SidebarChat/SidebarChat";
 import Pusher from "pusher-js";
 import api from "../../api/index";
+import { useStateValue } from "../../contextApi/StateProvider";
+import { auth } from "../../firebase/firebase";
+import { actionTypes } from "../../contextApi/reducer";
 function Sidebar() {
   const [rooms, setRooms] = useState([]);
   //loading all rooms from db
@@ -15,7 +19,8 @@ function Sidebar() {
     api.get("/api/room/all").then((response) => setRooms(response.data));
   }, []);
 
-  const user = JSON.parse(localStorage.getItem("userInfo"));
+  var [{ user }, dispatch] = useStateValue();
+  user = JSON.parse(localStorage.getItem("userInfo"));
 
   // getting real-time rooms
   useEffect(() => {
@@ -34,6 +39,20 @@ function Sidebar() {
     };
   }, [rooms]);
 
+  const signOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        // Sign-out successful.
+        localStorage.clear();
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: null,
+        });
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebar__header">
@@ -47,6 +66,9 @@ function Sidebar() {
           </IconButton>
           <IconButton>
             <MoreVertIcon />
+          </IconButton>
+          <IconButton onClick={signOut}>
+            <ExitToAppIcon />
           </IconButton>
         </div>
       </div>
