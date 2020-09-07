@@ -15,7 +15,14 @@ function SidebarChat({ addNewChat, room }) {
   };
 
   return !addNewChat ? (
-    <Link to={`/rooms/${room._id}`}>
+    <Link
+      to={{
+        pathname: `/rooms/${room._id}`,
+        state: {
+          room: room,
+        },
+      }}
+    >
       <div className="sidebarChat">
         <Avatar />
         <div className="sidebarChat__info">

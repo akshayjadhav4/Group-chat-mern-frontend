@@ -8,14 +8,14 @@ import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import Message from "../Message/Message";
 import api from "../../api/index";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Pusher from "pusher-js";
 
 function Chat() {
   // getting (roomId)param from url
   const { roomId } = useParams();
 
-  const [roomName, setRoomName] = useState("");
+  const { state } = useLocation();
 
   // storing messages
   const [messages, setMessages] = useState([]);
@@ -67,8 +67,8 @@ function Chat() {
       <div className="chat__header">
         <Avatar />
         <div className="chat__headerInfo">
-          <h3>Room Name</h3>
-          <p>Last seen 05:15PM</p>
+          <h3>{state.room.name}</h3>
+          <p>Last seen</p>
         </div>
         <div className="chat__headerRight">
           <IconButton>
