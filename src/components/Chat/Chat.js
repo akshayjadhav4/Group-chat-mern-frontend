@@ -70,7 +70,7 @@ function Chat() {
         <Avatar src={`https://avatars.dicebear.com/api/human/${roomId}.svg`} />
         <div className="chat__headerInfo">
           <h3>{state.room.name}</h3>
-          <p>Last seen</p>
+          <p>Last seen {messages[messages.length - 1]?.timeStamp}</p>
         </div>
         <div className="chat__headerRight">
           <IconButton>
