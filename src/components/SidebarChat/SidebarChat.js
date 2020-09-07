@@ -24,7 +24,9 @@ function SidebarChat({ addNewChat, room }) {
       }}
     >
       <div className="sidebarChat">
-        <Avatar />
+        <Avatar
+          src={`https://avatars.dicebear.com/api/human/${room._id}.svg`}
+        />
         <div className="sidebarChat__info">
           <h2>{room.name}</h2>
           <p>This is the last message</p>
