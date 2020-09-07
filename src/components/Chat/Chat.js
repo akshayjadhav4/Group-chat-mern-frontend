@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Chat.css";
 import { Avatar, IconButton } from "@material-ui/core";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
@@ -7,7 +7,19 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 import MicIcon from "@material-ui/icons/Mic";
 import Message from "../Message/Message";
+import api from "../../api/index";
 function Chat({ messages }) {
+  const [input, setInput] = useState("");
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    await api.post("/api/messages/new", {
+      message: input,
+      name: "Random User",
+      timeStamp: new Date().toUTCString(),
+    });
+    setInput("");
+  };
+
   return (
     <div className="chat">
       <div className="chat__header">
@@ -36,8 +48,13 @@ function Chat({ messages }) {
       <div className="chat__footer">
         <InsertEmoticonIcon />
         <form>
-          <input type="text" placeholder="Type a message" />
-          <button type="submit" onClick={() => {}}>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type a message"
+          />
+          <button type="submit" onClick={sendMessage}>
             Send a message
           </button>
         </form>
