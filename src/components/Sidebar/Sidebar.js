@@ -56,9 +56,11 @@ function Sidebar() {
       </div>
       <div className="sidebar__chats">
         <SidebarChat addNewChat />
-        {rooms.map((room) => (
-          <SidebarChat room={room} key={room._id} />
-        ))}
+        {rooms.length > 0 ? (
+          rooms.map((room) => <SidebarChat room={room} key={room._id} />)
+        ) : (
+          <p className="sidebar__message">No Room found.</p>
+        )}
       </div>
     </div>
   );

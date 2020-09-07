@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Chat.css";
 import { Avatar, IconButton } from "@material-ui/core";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
@@ -9,10 +9,20 @@ import MicIcon from "@material-ui/icons/Mic";
 import Message from "../Message/Message";
 import api from "../../api/index";
 import { useParams } from "react-router-dom";
+import Pusher from "pusher-js";
 
-function Chat({ messages }) {
+function Chat() {
+  // getting (roomId)param from url
   const { roomId } = useParams();
+
+  const [roomName, setRoomName] = useState("");
+
+  // storing messages
+  const [messages, setMessages] = useState([]);
+
+  // input for new messages
   const [input, setInput] = useState("");
+
   const sendMessage = async (e) => {
     e.preventDefault();
     await api.post("/api/messages/new", {
@@ -22,6 +32,30 @@ function Chat({ messages }) {
     });
     setInput("");
   };
+
+  //loading all messages from db
+  useEffect(() => {
+    api
+      .get("/api/messages/sync")
+      .then((response) => setMessages(response.data));
+  }, []);
+
+  // getting real-time messages
+  useEffect(() => {
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_ID, {
+      cluster: process.env.REACT_APP_PUSHER_CLUSTER,
+    });
+    const channel = pusher.subscribe("messages");
+    channel.bind(
+      "inserted",
+      (newMessages) => setMessages([...messages, newMessages]) //adding new messages to messages
+    );
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [messages]);
 
   return (
     <div className="chat">
