@@ -10,7 +10,7 @@ import Message from "../Message/Message";
 import api from "../../api/index";
 import { useParams, useLocation } from "react-router-dom";
 import Pusher from "pusher-js";
-
+import ScrollToBottom from "react-scroll-to-bottom";
 function Chat() {
   // getting (roomId)param from url
   const { roomId } = useParams();
@@ -84,11 +84,13 @@ function Chat() {
           </IconButton>
         </div>
       </div>
-      <div className="chat__body">
-        {messages.map((message) => (
-          <Message message={message} key={message._id} />
-        ))}
-      </div>
+      <ScrollToBottom className="chat__scroll">
+        <div className="chat__body">
+          {messages.map((message) => (
+            <Message message={message} key={message._id} />
+          ))}
+        </div>
+      </ScrollToBottom>
       <div className="chat__footer">
         <InsertEmoticonIcon />
         <form>
