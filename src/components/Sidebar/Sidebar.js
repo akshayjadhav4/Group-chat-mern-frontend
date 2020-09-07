@@ -15,6 +15,8 @@ function Sidebar() {
     api.get("/api/room/all").then((response) => setRooms(response.data));
   }, []);
 
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+
   // getting real-time rooms
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_ID, {
@@ -35,7 +37,7 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <Avatar />
+        <Avatar src={user.photoURL} />
         <div className="sidebar__headerRight">
           <IconButton>
             <DonutLargeIcon />

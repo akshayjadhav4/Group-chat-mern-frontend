@@ -23,12 +23,14 @@ function Chat() {
   // input for new messages
   const [input, setInput] = useState("");
 
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+
   const sendMessage = async (e) => {
     e.preventDefault();
     await api.post("/api/messages/new", {
       roomId: roomId,
       message: input,
-      name: "Random User",
+      name: user.displayName,
       timeStamp: new Date().toUTCString(),
     });
     setInput("");
