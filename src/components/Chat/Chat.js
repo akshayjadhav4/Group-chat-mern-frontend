@@ -26,6 +26,7 @@ function Chat() {
   const sendMessage = async (e) => {
     e.preventDefault();
     await api.post("/api/messages/new", {
+      roomId: roomId,
       message: input,
       name: "Random User",
       timeStamp: new Date().toUTCString(),
@@ -36,16 +37,20 @@ function Chat() {
   //loading all messages from db
   useEffect(() => {
     api
-      .get("/api/messages/sync")
+      .get("/api/messages/sync", {
+        params: {
+          roomId: roomId,
+        },
+      })
       .then((response) => setMessages(response.data));
-  }, []);
+  }, [roomId]);
 
   // getting real-time messages
   useEffect(() => {
     const pusher = new Pusher(process.env.REACT_APP_PUSHER_ID, {
       cluster: process.env.REACT_APP_PUSHER_CLUSTER,
     });
-    const channel = pusher.subscribe("messages");
+    const channel = pusher.subscribe(roomId);
     channel.bind(
       "inserted",
       (newMessages) => setMessages([...messages, newMessages]) //adding new messages to messages
@@ -55,7 +60,7 @@ function Chat() {
       channel.unbind_all();
       channel.unsubscribe();
     };
-  }, [messages]);
+  }, [messages, roomId]);
 
   return (
     <div className="chat">
