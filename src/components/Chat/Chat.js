@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Chat.css";
-import { Avatar, IconButton } from "@material-ui/core";
+import { Avatar, IconButton, Tooltip } from "@material-ui/core";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -11,6 +11,7 @@ import api from "../../api/index";
 import { useParams, useLocation } from "react-router-dom";
 import Pusher from "pusher-js";
 import ScrollToBottom from "react-scroll-to-bottom";
+import Picker from "emoji-picker-react";
 function Chat() {
   // getting (roomId)param from url
   const { roomId } = useParams();
@@ -36,6 +37,9 @@ function Chat() {
     setInput("");
   };
 
+  const onEmojiClick = (event, emojiObject) => {
+    setInput(input + emojiObject.emoji);
+  };
   //loading all messages from db
   useEffect(() => {
     api
@@ -63,6 +67,12 @@ function Chat() {
       channel.unsubscribe();
     };
   }, [messages, roomId]);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleTooltipOpen = () => {
+    setOpen(!open);
+  };
 
   return (
     <div className="chat">
@@ -92,7 +102,26 @@ function Chat() {
         </div>
       </ScrollToBottom>
       <div className="chat__footer">
-        <InsertEmoticonIcon />
+        <Tooltip
+          interactive
+          arrow
+          PopperProps={{
+            disablePortal: true,
+          }}
+          open={open}
+          disableFocusListener
+          disableHoverListener
+          disableTouchListener
+          title={
+            <>
+              <Picker onEmojiClick={onEmojiClick} />
+            </>
+          }
+        >
+          <IconButton onClick={handleTooltipOpen}>
+            <InsertEmoticonIcon />
+          </IconButton>
+        </Tooltip>
         <form>
           <input
             type="text"
