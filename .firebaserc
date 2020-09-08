@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "my-weather-515b6"
+  },
+  "targets": {
+    "my-weather-515b6": {
+      "hosting": {
+        "whats-app": [
+          "whats-app-mern-clone"
+        ]
+      }
+    }
+  }
+}
